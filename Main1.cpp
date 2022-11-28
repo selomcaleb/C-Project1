@@ -11,6 +11,7 @@
 #include <sstream>
 #include <fstream>
 #include <algorithm>
+#include "routes.cpp"
 
 
 
@@ -26,7 +27,7 @@ void print_map(std::unordered_map<K, V> const &m)
 }
 
 int main() {
-    //static unordered_map<string, vector<Route>> routes;
+    static unordered_map<string, vector<Routes>> routes;
     static unordered_map<string, string> airports;
     static unordered_map<string, vector<string>> locationToAirportsMap;
 
@@ -121,50 +122,50 @@ int main() {
     }
 
 /**
-    * Read and process routes.csv file
+    * Reading from the  routes.csv file
 **/
-//    try{
-//        ifstream routesFile('/Users/selomcaleb/Desktop/ICPTeam/routes.csv');
-//        string row = "";
-//        int count = 0;
-//        string ignore;
-//        string key;
-//        string airlinecode;
-//        string airlineid;
-//        string destairportcode;
-//        string stops;
-//        static vector<Route> values;
-//        char delim = ',';
-//
-//        while (getline(routesFile, row)) {
-//            if (count == 0) {
-//                count++;
-//                continue;
-//            }
-//
-//            stringstream input(row);
-//
-//            getline(input, airlinecode, delim);
-//            getline(input, airlineid, delim);
-//            getline(input, key, delim);
-//            getline(input, ignore, delim);
-//            getline(input, destairportcode, delim);
-//            getline(input, ignore, delim);
-//            getline(input, stops, delim);
-//
-//            Route route = Route(airlinecode, airlineid, destairportcode, stops);
-//
-//            values.push_back(route);
-//             cout << route.toString() << endl;
-//            routes.insert({key, values});
-//
-//        }
-//        for (Route i: values){cout << i.toString() << endl;}
-//        routesFile.close();
-//
-//    } catch (const exception &e) {
-//        cout << "Unable to open or read routes file." << e.what() << endl;
-//    }
+    try{
+        ifstream routesFile('/Users/selomcaleb/Desktop/ICPTeam/routes.csv');
+        string row = "";
+        int count = 0;
+        string ignore;
+        string key;
+        string airlinecode;
+        string airlineid;
+        string destairportcode;
+        int stops;
+        static vector<Routes> values;
+        char delim = ',';
+
+        while (getline(routesFile, row)) {
+            if (count == 0) {
+                count++;
+                continue;
+            }
+
+            stringstream input(row);
+
+            getline(input, airlinecode, delim);
+            getline(input, airlineid, delim);
+            getline(input, key, delim);
+            getline(input, ignore, delim);
+            getline(input, destairportcode, delim);
+            getline(input, ignore, delim);
+            // getline(input, stops);
+
+            Routes routes = Routes(airlinecode, airlineid, destairportcode, stops);
+
+            values.push_back(routes);
+            cout << routes.toString() << endl;
+            routes.insert({key, values});
+
+        }
+        for (Routes i: values){cout << i.toString() << endl;}
+        routesFile.close();
+
+    } catch (const exception &e) {
+        cout << "Unable to open or read routes file." << e.what() << endl;
+    }
 
     return 0;
 }
