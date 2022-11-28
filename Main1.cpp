@@ -27,7 +27,7 @@ void print_map(std::unordered_map<K, V> const &m)
 }
 
 int main() {
-    static unordered_map<string, vector<Routes>> routes;
+    static unordered_map<string, vector<Routes>> routeHashMap;
     static unordered_map<string, string> airports;
     static unordered_map<string, vector<string>> locationToAirportsMap;
 
@@ -125,7 +125,7 @@ int main() {
     * Reading from the  routes.csv file
 **/
     try{
-        ifstream routesFile('/Users/selomcaleb/Desktop/ICPTeam/routes.csv');
+        ifstream routesFile("routes.csv");
         string row = "";
         int count = 0;
         string ignore;
@@ -153,11 +153,11 @@ int main() {
             getline(input, ignore, delim);
             // getline(input, stops);
 
-            Routes routes = Routes(airlinecode, airlineid, destairportcode, stops);
+            Routes routes(airlinecode, airlineid, destairportcode, stops);
 
             values.push_back(routes);
             cout << routes.toString() << endl;
-            routes.insert({key, values});
+            routeHashMap.insert({key, values});
 
         }
         for (Routes i: values){cout << i.toString() << endl;}
