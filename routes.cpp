@@ -34,6 +34,8 @@ class Routes
     int getStops();
     void setStops(int stops);
 
+    string toString();
+
 };
 
 string Routes:: getAirlineCode(){
@@ -66,4 +68,9 @@ int Routes:: getStops(){
 
 void Routes:: setStops(int stops){
     this->stops = stops;
+}
+
+string Routes:: toString(){
+    return "Routes{airline Code: " + airlineCode + ", airline ID: " + airlineID+
+    ", destination Airport Code: " + destinationAirportCode + "' stops" + to_string(stops) + "})";
 }

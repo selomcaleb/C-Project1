@@ -99,13 +99,13 @@ class Node{
      */
 
     vector<string> solutionPath(){
-        vector<string> airportCodes = new vector<string>();
-        vector<string> airlineCodes = new vector<string>();
-        vector<string> solution = new vector<string>();
-        vector<int> stops = new vector<int>();
+        vector<string> airportCodes;
+        vector<string> airlineCodes;
+        vector<string> solution;
+        vector<int> stops;
         Node thisNode = this;
 
-        while(thisNode != null){
+        while(thisNode != nullptr){
             airlineCodes.push_back(thisNode.getAirlineCode());
             airportCodes.push_back(thisNode.getAirportCode());
             stops.push_back(thisNode.getStops());
@@ -116,7 +116,7 @@ class Node{
 
         for (int i = 0;i < airlineCodes.size()-1;i++){
             string result = airlineCodes.at(i+1) + " from " + airportCodes.at(i) + " to " +
-                    airportCodes.at(i+1) + " " + stops.at(i) + " stops.";
+                    airportCodes.at(i+1) + " " + to_string(stops.at(i)) + " stops.";
             solution.push_back(result);
         }
 
