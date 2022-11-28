@@ -3,7 +3,6 @@
 //
 
 
-
 #include <iostream>
 #include <string>
 #include <unordered_map>
@@ -12,7 +11,6 @@
 #include <fstream>
 #include <algorithm>
 #include "routes.cpp"
-
 
 
 using namespace std;
@@ -35,7 +33,7 @@ int main() {
    * Reading from the airports.csv file
  **/
     try {
-        ifstream airportsFile("/Users/selomcaleb/Desktop/ICPTeam/airports.csv");
+        ifstream airportsFile("airports.csv");
         string row = "";
         int count = 0;
         string ignore;
