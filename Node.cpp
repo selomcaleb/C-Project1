@@ -60,7 +60,7 @@ bool Node:: operator==(const Node &obj){
     if (*this == obj) {
         return true;
     }
-    if (obj = NULL || !obj.GetClass() = GetClass()){
+    if (&obj == NULL || typeid(obj) != typeid(this)){
         return false;
     }
     Node node = (Node) obj;
@@ -127,7 +127,7 @@ vector<string> Node:: solutionPath(){
     vector<int> stops;
     Node thisNode = *this;
 
-    while(thisNode != NULL){
+    while(&thisNode != NULL){
         airlineCodes.push_back(thisNode.getAirlineCode());
         airportCodes.push_back(thisNode.getAirportCode());
         stops.push_back(thisNode.getStops());
@@ -138,7 +138,7 @@ vector<string> Node:: solutionPath(){
 
     for (int i = 0;i < airlineCodes.size()-1;i++){
         string result = airlineCodes.at(i+1) + " from " + airportCodes.at(i) + " to " +
-                airportCodes.at(i+1) + " " + to_string(stops.at(i)) + " stops.";
+                airportCodes.at(i+1) + " " + stops.at(i) + " stops.";
         solution.push_back(result);
     }
 

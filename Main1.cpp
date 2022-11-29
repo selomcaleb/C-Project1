@@ -1,8 +1,3 @@
-/
-// Created by Selom Caleb Arcmann-Ackummey on 28/11/2022.
-//
-
-
 #include <iostream>
 #include <string>
 #include <unordered_map>
@@ -118,7 +113,7 @@ int main() {
         * Reading from the  routes.csv file
     **/
     try{
-        ifstream routesFile('/Users/selomcaleb/Desktop/ICPTeam/routes.csv');
+        ifstream routesFile('routes.csv');
         string row = "";
         int count = 0;
         string ignore;
@@ -162,14 +157,14 @@ int main() {
 
 
     //reading from the input file
-    ifstream inputFile('input.txt')
+    ifstream inputFile('input.txt');
     string initialLoc;
     string destinationLoc;
 
     getline(inputFile, initialLoc);
     getline(inputFile,destinationLoc);
 
-    ofstream outputFile('output.txt')
+    ofstream outputFile('output.txt');
     vector<string> path = breadthFirstSearch(initialLoc,destinationLoc);
     int numberOfFlights = 0;
     if(!path.empty()){
