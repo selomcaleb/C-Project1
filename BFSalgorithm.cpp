@@ -1,6 +1,6 @@
 #include <iostream>
 #include <queue>
-#include <set>
+#include <unordered_set>
 #include <vector>
 #include <unordered_map>
 #include <iterator>
@@ -16,7 +16,7 @@ class BFS
     string initialLoc;
     string destinationLoc;
     deque<shared_ptr<Node>> frontier;
-    set<string> exploredSet;
+    unordered_set<string> exploredSet;
     vector<string> airports;
     unordered_map<string, string> airportsToPlaces;
     unordered_map<string, vector<string>> locationToAirportsMap;
@@ -27,7 +27,7 @@ class BFS
 
     bool contains(deque<shared_ptr<Node>> aQueue, shared_ptr<Node> aNode);
 
-    bool contains(set<string> aSet, string stringItem);
+    bool contains(unordered_set<string> aSet, string stringItem);
 
     bool equals(shared_ptr<Node> node1, shared_ptr<Node> node2);
 
@@ -57,7 +57,7 @@ bool BFS::contains(deque<shared_ptr<Node>> aQueue, shared_ptr<Node> aNode){
 }
 
 
-bool BFS::contains(set<string> aSet, string stringItem){
+bool BFS::contains(unordered_set<string> aSet, string stringItem){
     bool check;
     for(auto item : aSet)
     {
