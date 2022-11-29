@@ -20,7 +20,7 @@ class BFS
     vector<string> airports;
     unordered_map<string, string> airportsToPlaces;
     unordered_map<string, vector<string>> locationToAirportsMap;
-    unordered_map<string, vector<Routes>> routesMap;
+    unordered_map<string, vector<shared_ptr<Routes>>> routesMap;
 
     public:
     BFS(unordered_map<string, string> airportsMap, unordered_map<string, vector<string>> locationsMap);
