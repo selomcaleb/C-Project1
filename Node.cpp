@@ -23,7 +23,7 @@ class Node{
         this->successors = successors;
     }
 
-    string to_string();
+    string toString();
     bool operator==(const Node &obj);
     int hashCode();
 
@@ -46,7 +46,7 @@ class Node{
     vector<string> solutionPath();
 };
 
-string Node:: to_string(){
+string Node:: toString(){
     return "Node{parentNode= ", *parentNode,
             ", airportCode='" + airportCode + '\'' +
             ", airlineCode='" + airlineCode + '\'' +
@@ -135,7 +135,7 @@ vector<string> Node:: solutionPath(){
     for (int i = 0;i < airlineCodes.size()-1;i++){
         int stop = stops.at(i);
         string result = airlineCodes.at(i+1) + " from " + airportCodes.at(i) + " to " +
-                airportCodes.at(i+1) + " " + to_string(stop) + " stops.";
+                airportCodes.at(i+1) + " " + to_string(stops.at(i)) + " stops.";
         solution.push_back(result);
     }
 
