@@ -1,4 +1,4 @@
-//
+/
 // Created by Selom Caleb Arcmann-Ackummey on 28/11/2022.
 //
 
@@ -13,6 +13,7 @@
 #include "routes.cpp"
 
 
+
 using namespace std;
 
 template<typename K, typename V>
@@ -25,13 +26,13 @@ void print_map(std::unordered_map<K, V> const &m)
 }
 
 int main() {
-    static unordered_map<string, vector<Routes>> routeHashMap;
+    static unordered_map<string, vector<Routes>> routes;
     static unordered_map<string, string> airports;
     static unordered_map<string, vector<string>> locationToAirportsMap;
 
-/**
-   * Reading from the airports.csv file
- **/
+    /**
+       * Reading from the airports.csv file
+     **/
     try {
         ifstream airportsFile("airports.csv");
         string row = "";
@@ -71,10 +72,7 @@ int main() {
             }
 
 
-            /*
-            * If airportValues is null, the String(city, country) key does not have any value yet.
-            * Create new airport values arraylist for the key and add corresponding airport code to it.
-            */
+
             if (airportValues.empty()) {
                 vector<string> newAirportValues;
                 string codeforAirport = key;
@@ -86,10 +84,7 @@ int main() {
                 }
                 locationToAirportsMap.insert({values, newAirportValues});
 
-                /*
-                 * If airportValues is not null, check if current route is in values before
-                 * adding, to prevent duplicate airport codes in each value arraylist
-                 */
+                
             } else {
                 static string codeForAirport;
                 if (!std::count(airportValues.begin(), airportValues.end(), key)) {
@@ -119,11 +114,11 @@ int main() {
         cout << "Cannot open or read file." << e.what() << endl;
     }
 
-/**
-    * Reading from the  routes.csv file
-**/
+    /**
+        * Reading from the  routes.csv file
+    **/
     try{
-        ifstream routesFile("routes.csv");
+        ifstream routesFile('/Users/selomcaleb/Desktop/ICPTeam/routes.csv');
         string row = "";
         int count = 0;
         string ignore;
@@ -151,11 +146,11 @@ int main() {
             getline(input, ignore, delim);
             // getline(input, stops);
 
-            Routes routes(airlinecode, airlineid, destairportcode, stops);
+            Routes routes = Routes(airlinecode, airlineid, destairportcode, stops);
 
             values.push_back(routes);
             cout << routes.toString() << endl;
-            routeHashMap.insert({key, values});
+            routes.insert({key, values});
 
         }
         for (Routes i: values){cout << i.toString() << endl;}
@@ -164,6 +159,33 @@ int main() {
     } catch (const exception &e) {
         cout << "Unable to open or read routes file." << e.what() << endl;
     }
+
+
+    //reading from the input file
+    ifstream inputFile('input.txt')
+    string initialLoc;
+    string destinationLoc;
+
+    getline(inputFile, initialLoc);
+    getline(inputFile,destinationLoc);
+
+    ofstream outputFile('output.txt')
+    vector<string> path = breadthFirstSearch(initialLoc,destinationLoc);
+    int numberOfFlights = 0;
+    if(!path.empty()){
+        for (string flight:path){
+            outputFile << flight << endl;
+            numberOfFlights++;
+        }
+
+        outputFile <<"Total Flights: " + numberOfFlights;
+    } else{
+        outputFile <<"solution not found";
+    }
+
+    outputFile.close();
+
+
 
     return 0;
 }
