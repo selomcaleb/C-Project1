@@ -113,7 +113,7 @@ int main() {
         * Reading from the  routes.csv file
     **/
     try{
-        ifstream routesFile('routes.csv');
+        ifstream routesFile("routes.csv");
         string row = "";
         int count = 0;
         string ignore;
@@ -157,14 +157,14 @@ int main() {
 
 
     //reading from the input file
-    ifstream inputFile('input.txt');
+    ifstream inputFile("kumasi-winnipeg.txt");
     string initialLoc;
     string destinationLoc;
 
     getline(inputFile, initialLoc);
     getline(inputFile,destinationLoc);
 
-    ofstream outputFile('output.txt');
+    ofstream outputFile("kumasi-winnipeg_output.txt");
     vector<string> path = breadthFirstSearch(initialLoc,destinationLoc);
     int numberOfFlights = 0;
     if(!path.empty()){
