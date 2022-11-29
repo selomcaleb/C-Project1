@@ -5,9 +5,11 @@
 #include <sstream>
 #include <fstream>
 #include <algorithm>
-#include "routes.cpp"
-
-
+#include <queue>
+#include <set>
+#include "Routes.cpp"
+#include "Node.cpp"
+#include "BFSalgorithm.cpp"
 
 using namespace std;
 
@@ -21,8 +23,8 @@ void print_map(std::unordered_map<K, V> const &m)
 }
 
 int main() {
-    static unordered_map<string, vector<Routes>> routes;
-    static unordered_map<string, string> airports;
+    static unordered_map<string, vector<Routes>> routesMap;
+    static unordered_map<string, string> airportsToPlaces;
     static unordered_map<string, vector<string>> locationToAirportsMap;
 
     /**
@@ -57,10 +59,10 @@ int main() {
 
             values = city + ", " + country;
 
-            airports.insert({key, values});
+            airportsToPlaces.insert({key, values});
             /* Create new vector of airport codes and store them as airportValues */
             vector<string> airportValues;
-            for (const auto& [k, v] : airports) {
+            for (const auto& [k, v] : airportsToPlaces) {
                 if (v == values) {
                     airportValues.push_back(k);
                 }
@@ -100,7 +102,7 @@ int main() {
             }
         }
         cout << "" << endl;
-        print_map(airports);
+        print_map(airportsToPlaces);
 
 
         airportsFile.close();
@@ -139,13 +141,12 @@ int main() {
             getline(input, ignore, delim);
             getline(input, destairportcode, delim);
             getline(input, ignore, delim);
-            // getline(input, stops);
 
-            Routes routes = Routes(airlinecode, airlineid, destairportcode, stops);
+            Routes route(airlinecode, airlineid, destairportcode, stops);
 
-            values.push_back(routes);
-            cout << routes.toString() << endl;
-            routes.insert({key, values});
+            values.push_back(route);
+            cout << route.toString() << endl;
+            routesMap.insert({key, values});
 
         }
         for (Routes i: values){cout << i.toString() << endl;}
@@ -164,8 +165,13 @@ int main() {
     getline(inputFile, initialLoc);
     getline(inputFile,destinationLoc);
 
+    BFS BFS(airportsToPlaces, locationToAirportsMap);
+    queue<Node> frontier;
+    set<string> exploredSet;
+    vector<string> airports = locationToAirportsMap.at(initialLoc);
+
     ofstream outputFile("kumasi-winnipeg_output.txt");
-    vector<string> path = breadthFirstSearch(initialLoc,destinationLoc);
+    vector<string> path = BFS.breadthFirstSearch(initialLoc,destinationLoc);
     int numberOfFlights = 0;
     if(!path.empty()){
         for (string flight:path){
