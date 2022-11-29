@@ -69,10 +69,6 @@ bool Node:: operator==(const Node &obj){
             && stops == node.stops;
 }
 
-int Node:: hashCode(){
-    return hash(*parentNode, airportCode, airlineCode, stops, successors);
-}
-
 Node Node:: getParentNode() {
     return *parentNode;
 }
@@ -137,8 +133,9 @@ vector<string> Node:: solutionPath(){
     reverse(airportCodes.begin(), airportCodes.end());
 
     for (int i = 0;i < airlineCodes.size()-1;i++){
+        int stop = stops.at(i);
         string result = airlineCodes.at(i+1) + " from " + airportCodes.at(i) + " to " +
-                airportCodes.at(i+1) + " " + stops.at(i) + " stops.";
+                airportCodes.at(i+1) + " " + to_string(stop) + " stops.";
         solution.push_back(result);
     }
 
