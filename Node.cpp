@@ -5,6 +5,7 @@
 using namespace std;
 
 class Node{
+    template<class Node> class shared_ptr;
 
     private:
     Node *parentNode;

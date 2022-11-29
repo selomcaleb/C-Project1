@@ -6,7 +6,7 @@
 #include <fstream>
 #include <algorithm>
 #include <queue>
-#include <set>
+#include <unordered_set>
 #include "Routes.cpp"
 #include "Node.cpp"
 #include "BFSalgorithm.cpp"
@@ -165,12 +165,12 @@ int main() {
     getline(inputFile, initialLoc);
     getline(inputFile,destinationLoc);
 
+    ofstream outputFile("kumasi-winnipeg_output.txt");
+
     BFS BFS(airportsToPlaces, locationToAirportsMap);
-    queue<Node> frontier;
+    deque<Node> frontier;
     set<string> exploredSet;
     vector<string> airports = locationToAirportsMap.at(initialLoc);
-
-    ofstream outputFile("kumasi-winnipeg_output.txt");
     vector<string> path = BFS.breadthFirstSearch(initialLoc,destinationLoc);
     int numberOfFlights = 0;
     if(!path.empty()){

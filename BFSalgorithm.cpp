@@ -6,14 +6,16 @@
 #include <iterator>
 #include "Routes.cpp"
 #include "Node.cpp"
+#include <memory>
 
 
 class BFS
 {
+    
     protected:
     string initialLoc;
     string destinationLoc;
-    queue<Node> frontier;
+    deque<shared_ptr<Node>> frontier;
     set<string> exploredSet;
     vector<string> airports;
     unordered_map<string, string> airportsToPlaces;
@@ -23,11 +25,11 @@ class BFS
     public:
     BFS(unordered_map<string, string> airportsMap, unordered_map<string, vector<string>> locationsMap);
 
-    bool contains(queue<Node> aQueue, Node aNode);
+    bool contains(deque<shared_ptr<Node>> aQueue, shared_ptr<Node> aNode);
 
     bool contains(set<string> aSet, string stringItem);
 
-    bool equals(Node node1, Node node2);
+    bool equals(shared_ptr<Node> node1, shared_ptr<Node> node2);
 
     bool equals(string firstString, string secondString);
 
@@ -38,27 +40,24 @@ class BFS
 };
 
 
-BFS::BFS (unordered_map<string, string> airportsMap, unordered_map<string, vector<string>> locationsMap)
-    {
+BFS::BFS (unordered_map<string, string> airportsMap, unordered_map<string, vector<string>> locationsMap){
         this-> airportsToPlaces = airportsMap;
         this->locationToAirportsMap = locationsMap;
-    }
+}
 
-bool BFS::contains(queue<Node> aQueue, Node aNode)
-{
+bool BFS::contains(deque<shared_ptr<Node>> aQueue, shared_ptr<Node> aNode){
     bool check;
-    queue<Node> newQueueCopy = aQueue;
+    deque<shared_ptr<Node>> newQueueCopy = aQueue;
     while(!newQueueCopy.empty())
     {
-        Node item = newQueueCopy.front();
+        shared_ptr<Node> item = newQueueCopy.front();
         check = equals(item, aNode);
     }
     return check;
 }
 
 
-bool BFS::contains(set<string> aSet, string stringItem)
-{
+bool BFS::contains(set<string> aSet, string stringItem){
     bool check;
     for(auto item : aSet)
     {
@@ -70,7 +69,7 @@ bool BFS::contains(set<string> aSet, string stringItem)
 }
 
 
-bool BFS::equals(Node firstNode, Node secNode)
+bool BFS::equals(shared_ptr<Node> firstNode, shared_ptr<Node> secNode)
 {
     return (typeid(firstNode) == typeid(secNode));
 }
@@ -88,35 +87,47 @@ bool BFS::equals(vector<Routes> firstList, any secondItem)
 
 vector<string> BFS::breadthFirstSearch(string initialLoc, string destinationLoc)
 {
-    airports = locationToAirportsMap.at(initialLoc);
+    vector<string>airports = locationToAirportsMap[initialLoc];
 
-    for(string airport:airports)
-    {
-        Node airportNode(NULL, airport, NULL, 0, NULL);
-        frontier.push(airportNode);
+    if (!airports.empty()){
+        for(string airport:airports)
+        {
+            shared_ptr<Node> airportNode(nullptr);
+            airportNode = make_shared<Node>(nullptr, airport, nullptr, 0, nullptr);
+            frontier.push_back(airportNode);
+        }
     }
 
-    while(frontier.size() != 0)
+    while(!frontier.empty())
     {
-        Node currentNode = frontier.pop();
-        exploredSet.insert(currentNode.getAirportCode());
-        vector<Routes> successorStates = routesMap.at(currentNode.getAirportCode());
+        shared_ptr<Node> currentNode = frontier.pop_front();
+        vector<shared_ptr<Routes>> successorStates = routesMap[currentNode->getAirportCode()];
+        if (currentNode == nullptr){
+            continue;
+        }
 
-        if (equals(successorStates, NULL) == false)
-        {
-            for(Routes successorState: successorStates)
+        exploredSet.insert(currentNode->getAirportCode());
+
+
+        vector<shared_ptr<Routes>> successorStates = routesMap[currentNode->getAirportCode()];       
+        if (!successorStates.empty()){
+            for(shared_ptr<Routes> successorState: successorStates)
             {
-                Node child(currentNode, successorState.getDestinationAirportCode(), successorState.getAirlineCode(), successorState.getStops(), NULL);
+                shared_ptr<Node> child= make_shared<Node>(currentNode, successorState->getDestinationAirportCode(), successorState->getAirlineCode(), successorState->getStops(), nullptr);
 
-                if (!(contains(frontier, child)) && !(contains(exploredSet, child.getAirportCode()))){
-                    string destinationName = airportsToPlaces.at(child.getAirportCode());
-                    if((equals(destinationName, NULL) == false) && (equals(destinationName, destinationLoc) == true))
-                    {
-                        return child.solutionPath();
-                    }
+                string destinationName = airportsToPlaces[child->getAirportCode()];
+                if (destinationName == destinationLoc){
+                    return child->solutionPath();
                 }
-                frontier.push(child);
+
+                if (!(contains(frontier, child)) && !(contains(exploredSet, child->getAirportCode()))){
+                    
+                   frontier.push_back(child);
+                }
+                
             }
         }
+        cout << "Sorry, no solution found!"<<endl;
+        return vector<string>();
     }
 }
