@@ -100,7 +100,8 @@ vector<string> BFS::breadthFirstSearch(string initialLoc, string destinationLoc)
 
     while(!frontier.empty())
     {
-        shared_ptr<Node> currentNode = frontier.pop_front();
+        shared_ptr<Node> currentNode = frontier.front();
+        frontier.pop_front();
         vector<shared_ptr<Routes>> successorStates = routesMap[currentNode->getAirportCode()];
         if (currentNode == nullptr){
             continue;

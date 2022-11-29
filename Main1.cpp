@@ -169,7 +169,7 @@ int main() {
 
     BFS BFS(airportsToPlaces, locationToAirportsMap);
     deque<Node> frontier;
-    set<string> exploredSet;
+    unordered_set<string> exploredSet;
     vector<string> airports = locationToAirportsMap.at(initialLoc);
     vector<string> path = BFS.breadthFirstSearch(initialLoc,destinationLoc);
     int numberOfFlights = 0;
