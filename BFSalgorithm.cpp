@@ -2,7 +2,6 @@
 #include <queue>
 #include <set>
 #include <vector>
-#include <list>
 #include <unordered_map>
 #include <iterator>
 #include "Routes.cpp"
@@ -16,9 +15,10 @@ class BFS
     string destinationLoc;
     queue<Node> frontier;
     set<string> exploredSet;
-    list<string> airports;
+    vector<string> airports;
     unordered_map<string, string> airportsToPlaces;
     unordered_map<string, vector<string>> locationToAirportsMap;
+    unordered_map<string, vector<Routes>> routesMap;
 
     public:
     BFS(unordered_map<string, string> airportsMap, unordered_map<string, vector<string>> locationsMap);
@@ -31,7 +31,7 @@ class BFS
 
     bool equals(string firstString, string secondString);
 
-    bool equals(list<Routes> firstList, any secondItem);
+    bool equals(vector<Routes> firstList, any secondItem);
 
     vector<string> breadthFirstSearch(string initialLoc, string destinationLoc);
 
@@ -80,7 +80,7 @@ bool BFS::equals(string firstString, string secondString)
     return (firstString == secondString);
 }
 
-bool BFS::equals(list<Routes> firstList, any secondItem)
+bool BFS::equals(vector<Routes> firstList, any secondItem)
 {
     return (typeid(firstList) == typeid(secondItem));
 }
@@ -88,7 +88,7 @@ bool BFS::equals(list<Routes> firstList, any secondItem)
 
 vector<string> BFS::breadthFirstSearch(string initialLoc, string destinationLoc)
 {
-    airports = locationToAirportsMap.get(initialLoc);
+    airports = locationToAirportsMap.at(initialLoc);
 
     for(string airport:airports)
     {
@@ -100,7 +100,7 @@ vector<string> BFS::breadthFirstSearch(string initialLoc, string destinationLoc)
     {
         Node currentNode = frontier.pop();
         exploredSet.insert(currentNode.getAirportCode());
-        list<Routes> successorStates = routesMap.get(currentNode.getAirportCode());
+        vector<Routes> successorStates = routesMap.at(currentNode.getAirportCode());
 
         if (equals(successorStates, NULL) == false)
         {
@@ -109,7 +109,7 @@ vector<string> BFS::breadthFirstSearch(string initialLoc, string destinationLoc)
                 Node child(currentNode, successorState.getDestinationAirportCode(), successorState.getAirlineCode(), successorState.getStops(), NULL);
 
                 if (!(contains(frontier, child)) && !(contains(exploredSet, child.getAirportCode()))){
-                    string destinationName = airportsToPlaces.get(child.getAirportCode());
+                    string destinationName = airportsToPlaces.at(child.getAirportCode());
                     if((equals(destinationName, NULL) == false) && (equals(destinationName, destinationLoc) == true))
                     {
                         return child.solutionPath();
