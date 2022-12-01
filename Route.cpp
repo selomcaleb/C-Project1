@@ -1,7 +1,8 @@
+/*This code creates an Route class
+*/
 #include <string>
 #include <vector>
 #pragma once
-
 using namespace std;
 
 class Route{
@@ -16,8 +17,6 @@ public:
         this->destinationAirportCode = destinationAirportCode;
         this->stops = stops;
     }
-
-
 
     string getAirlineCode()  {
         return airlineCode;

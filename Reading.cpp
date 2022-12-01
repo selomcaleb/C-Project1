@@ -1,3 +1,5 @@
+/*This code creates a class to read the various files
+*/
 #include<iostream>
 #include "Node.cpp"
 #include "Route.cpp"
@@ -8,7 +10,6 @@
 #include <algorithm>
 #include <fstream>
 #include <sstream>
-
 using namespace std;
 
 class Reading {
@@ -16,7 +17,7 @@ public:
     unordered_map<string, vector<Route>> readRoutes() {
         unordered_map<string, vector<Route>> routesMap;
         string readLine;
-        ifstream readRouteFile("/Users/selomcaleb/CLionProjects/FINAL C++ PROJECT/routes.csv");
+        ifstream readRouteFile("routes.csv");
         while (getline(readRouteFile, readLine)) {
             vector<string> data;
             stringstream iss(readLine);
@@ -30,12 +31,12 @@ public:
             string airlineId = data[0];
             int noOfStops = stoi(data[7]);
             Route route(airlineId, destinationAirportCode, noOfStops);
-            /* Checking if the key is already present in the map. If not, it is creating a new key with an empty vector. */
+            // Checking if the key is already present in the map. If not, it is creating a new key with an empty vector
             if (routesMap.count(sourceAirportCode) > 0) {
                 routesMap.at(sourceAirportCode).push_back(route);
             }
 
-                /* Adding the route object to the vector of routes. */
+            // Adding the route object to the vector of routes
             else {
                 vector<Route> routeDetails;
                 routeDetails.push_back(route);
@@ -49,9 +50,8 @@ public:
 
     unordered_map<string, vector<string>> readAirports() {
         unordered_map<string, vector<string>> locationToAirportsMap;
-        //unordered_map<string,string> airportToPlaces;
         string readLine;
-        ifstream airportReader("/Users/selomcaleb/Desktop/LEVEL 200 SEC. SEM/ICP/C-Project1 2/airports.csv");
+        ifstream airportReader("airports.csv");
 
         while (getline(airportReader, readLine)) {
             vector<string> data;
@@ -64,7 +64,6 @@ public:
             if (data[4] == "\\N") continue;
             string airportCode = data[4];
             string cityCountry = data[2] + ',' + ' ' + data[3];
-            //airportToPlaces[airportCode] = cityCountry;
 
 
             if (locationToAirportsMap.count(cityCountry) > 0) {
@@ -82,7 +81,7 @@ public:
     unordered_map<string, string> readAirportAgain() {
         unordered_map<string, string> airportToPlaces;
         string readLine;
-        ifstream airportReader("/Users/selomcaleb/Desktop/LEVEL 200 SEC. SEM/ICP/C-Project1 2/airports.csv");
+        ifstream airportReader("airports.csv");
         while (getline(airportReader, readLine)) {
             vector<string> data;
             stringstream iss(readLine);
@@ -95,12 +94,8 @@ public:
             string airportCode = data[4];
             string cityCountry = data[2] + ',' + ' ' + data[3];
             airportToPlaces[airportCode] = cityCountry;
-
-            //airportToPlaces.insert({airportCode,cityCountry});
-
-
-
         }
+
         airportReader.close();
         return airportToPlaces;
     };
@@ -134,8 +129,7 @@ public:
             if (!successors.empty()) {
                 for (Route successor: successors) {
                     shared_ptr<Node> child = make_shared<Node>(currentNode, successor.getDestinationAirportCode(),
-                                                               successor.getStops(), successor.getAirlineCode(),
-                                                               nullptr);
+                                                               successor.getStops(), successor.getAirlineCode(), nullptr);
 
                     if (airportsToPlaces.count(child->getAirportCode()) != 0) {
                         string destinationName = airportsToPlaces.at(child->getAirportCode());
@@ -152,20 +146,18 @@ public:
                         frontier.push_back(child);
                     }
                 }
-
             }
-
         }
+
         vector<string> empty;
         return empty;
-
     }
 
 
 };
 
 int main() {
-    ifstream inputFile("/Users/selomcaleb/CLionProjects/FINAL C++ PROJECT/kumasi-winnipeg.txt");
+    ifstream inputFile("kumasi-winnipeg.txt");
     string initialLoc;
     string destinationLoc;
 

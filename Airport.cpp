@@ -1,3 +1,6 @@
+/*This code creates an Airport class
+*/
+
 #include <iostream>
 using namespace std;
 
@@ -12,10 +15,10 @@ public:
 
     Airport(string airportID,string airportName,string airportCity, string country,string IACOCode){
         this->airportID = airportID;
-        this->airportName =airportName;
+        this->airportName = airportName;
         this->airportCity = airportCity;
         this->country = country;
-        this->IACOCode =IACOCode;
+        this->IACOCode = IACOCode;
     }
 
     string getAirportId()  {

@@ -1,12 +1,12 @@
+/*This code creates a Node class for each current state
+*/
 #include <iostream>
 #include <vector>
 #include <algorithm>
 #include <memory>
 #include <fstream>
 #include "Route.cpp"
-
 #pragma once
-
 using namespace std;
 
 class Node {
@@ -51,6 +51,7 @@ public:
                node.successors == this->successors;
     }
 
+    // returns all airports encountered to get to destination
     void solutionPath() {
         vector<string> airportCodes;
         vector<string> airlineCodes;
